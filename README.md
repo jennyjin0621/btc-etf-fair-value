@@ -1,7 +1,5 @@
 # Bitcoin ETF Fair Value
 
-Starter repo for the student research project on spot bitcoin ETF fair value, premiums and the weekend gap. The full project guide (motivation, steps, red flags) is in the PDF your mentor sent.
-
 **Question.** Spot BTC ETFs trade 6.5 hours a day, bitcoin trades 24/7. How closely do ETF prices track fair value, why do some funds hold persistent premiums, and is any of it tradeable after costs?
 
 ## Setup
@@ -34,7 +32,7 @@ data/raw/                         put issuer NAV downloads here (git-ignored)
 ## Where to go
 
 - [ ] **Week 1 (everyone).** Run the sanity notebook for IBIT. Reproduce the issuer's daily premium within ~2 bps, check the fee decay fit against the stated fee, and start the daily 1-min data collector.
-- **After that, it's open.** Directions we think are interesting (pick, combine, or pitch your own):
+- **After that, it's open.** Directions I think are interesting (pick, combine, or pitch your own):
   - Compare funds. Why are some persistently rich or cheap? Fees, APs, custody, cash vs in-kind creation.
   - Intraday fair value. Size and half-life of the premium vs the bid/ask spread.
   - The weekend gap. Does the Monday open fully price the weekend BTC move?
