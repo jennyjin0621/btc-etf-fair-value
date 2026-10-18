@@ -7,7 +7,7 @@ Starter repo for the student research project on spot bitcoin ETF fair value, pr
 ## Setup
 
 ```bash
-git clone <this repo> && cd btc-etf-fair-value
+git clone https://github.com/jennyjin0621/btc-etf-fair-value.git && cd btc-etf-fair-value
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 pytest -q                          # should pass, runs on synthetic data
@@ -31,14 +31,15 @@ tests/                            pytest, synthetic + parser fixtures
 data/raw/                         put issuer NAV downloads here (git-ignored)
 ```
 
-## Week-by-week checklist
+## Where to go
 
-- [ ] **Week 1.** Run the sanity notebook for IBIT. Reproduce the issuer's daily premium within ~2 bps. Fee decay fit matches the stated fee.
-- [ ] **Week 2.** Extend to all 6 funds. One table of mean / std / persistence of daily premium per fund.
-- [ ] **Week 3.** Intraday fair value. Premium distribution, half-life, and how both compare to the quoted bid/ask spread.
-- [ ] **Week 4.** Weekend and holiday gaps. Does the Monday open fully price the weekend BTC move? Does the residual survive the spread?
-- [ ] **Week 5.** Cross-section. Explain premium differences with fees, size, AP and custody setup, and the move from cash to in-kind creations.
-- [ ] **Week 6.** Write-up. Short memo plus clean notebook with an honest, cost-adjusted verdict.
+- [ ] **Week 1 (everyone).** Run the sanity notebook for IBIT. Reproduce the issuer's daily premium within ~2 bps, check the fee decay fit against the stated fee, and start the daily 1-min data collector.
+- **After that, it's open.** Directions we think are interesting (pick, combine, or pitch your own):
+  - Compare funds. Why are some persistently rich or cheap? Fees, APs, custody, cash vs in-kind creation.
+  - Intraday fair value. Size and half-life of the premium vs the bid/ask spread.
+  - The weekend gap. Does the Monday open fully price the weekend BTC move?
+  - Flows and creations. Do premiums drive creations, and do creations close premiums?
+- Bring back a notebook that runs from a fresh clone and a short memo with an honest, cost-adjusted verdict.
 
 ## Rules of thumb
 

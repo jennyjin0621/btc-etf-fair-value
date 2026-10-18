@@ -49,7 +49,7 @@ code("""daily = data.load_etf_bars(TICKER, interval="1d", period="1y")
 daily.index = daily.index.tz_convert("America/New_York").tz_localize(None).normalize()
 gaps = fv.weekend_gaps(daily, btc_h.close)
 gaps.plot.scatter("btc_ret", "etf_gap", title="Monday gap vs weekend BTC move"); gaps.describe()"""),
-md("""## Questions to answer before week 2
+md("""## Questions to answer before moving on
 
 1. Does your daily premium match the issuer's within a couple of bps? If not, is it the closing price, the NAV timing, or the benchmark?
 2. Does the implied fee match the stated fee? What does the residual noise (in bps) tell you about using a single exchange as the BTC reference?
