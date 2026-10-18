@@ -16,7 +16,7 @@ from btcetf import data, fairvalue as fv
 from btcetf.universe import ETFS
 TICKER = "IBIT\""""),
 md("## 1. BTC spot (1m candles, free from Coinbase via CCXT)"),
-code("""end = pd.Timestamp.utcnow().floor("D")
+code("""end = pd.Timestamp.now("UTC").floor("D")
 start = end - pd.Timedelta(days=6)
 btc = data.load_btc_spot(str(start.date()), str(end.date()))
 btc.close.plot(title="BTC/USD 1m"); btc.tail()"""),
@@ -54,7 +54,7 @@ md("""## Questions to answer before week 2
 1. Does your daily premium match the issuer's within a couple of bps? If not, is it the closing price, the NAV timing, or the benchmark?
 2. Does the implied fee match the stated fee? What does the residual noise (in bps) tell you about using a single exchange as the BTC reference?
 3. Is the intraday premium you measure larger than IBIT's bid/ask spread? Check the spread before calling anything an edge.
-4. What timezone is each series in? Plot one hour of ETF and BTC on the same axis and convince yourself they line up."""),
+4. What timezone is each series in, and is each bar stamped at its open or its close? (The loaders re-stamp at close.) Plot one hour of ETF and BTC on the same axis and convince yourself they line up."""),
 ]
 nb = nbf.v4.new_notebook(); nb["cells"] = cells
 Path(__file__).resolve().parents[1].joinpath("notebooks", "00_sanity_check.ipynb").write_text(nbf.writes(nb))

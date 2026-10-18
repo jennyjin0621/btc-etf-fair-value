@@ -33,7 +33,7 @@ def _cache_path(name: str) -> Path:
 def load_btc_spot(start: str, end: str, timeframe: str = "1m",
                   exchange: str = "coinbaseexchange", symbol: str = "BTC/USD",
                   use_cache: bool = True) -> pd.DataFrame:
-    """OHLCV candles from a crypto exchange, indexed by UTC timestamp.
+    """OHLCV candles from a crypto exchange, indexed by UTC bar CLOSE time.
 
     Exchanges differ in how much history they serve. Coinbase Exchange and
     Bitstamp serve long 1m history. Kraken only serves the latest 720 candles.
@@ -61,8 +61,10 @@ def load_btc_spot(start: str, end: str, timeframe: str = "1m",
     df = pd.DataFrame(rows, columns=["ts", "open", "high", "low", "close", "volume"])
     df = df.drop_duplicates("ts")
     df = df[df.ts < end_ms]
-    df.index = pd.to_datetime(df.pop("ts"), unit="ms", utc=True)
-    df.index.name = "timestamp"
+    # CCXT stamps candles with their OPEN time. Re-stamp with the CLOSE time so an
+    # asof lookup at time t only ever uses candles that had finished by t.
+    df.index = pd.to_datetime(df.pop("ts"), unit="ms", utc=True) + pd.Timedelta(milliseconds=step)
+    df.index.name = "timestamp_close"
     df.to_csv(path)
     return df
 
@@ -73,7 +75,7 @@ def load_btc_spot(start: str, end: str, timeframe: str = "1m",
 def load_etf_bars(ticker: str, interval: str = "1m", period: str | None = "7d",
                   start: str | None = None, end: str | None = None,
                   use_cache: bool = True) -> pd.DataFrame:
-    """ETF OHLCV from Yahoo Finance, index converted to UTC."""
+    """ETF OHLCV from Yahoo Finance, index in UTC. Intraday bars are stamped at bar CLOSE."""
     import yfinance as yf
 
     key = f"yf_{ticker}_{interval}_{period}_{start}_{end}"
@@ -89,7 +91,9 @@ def load_etf_bars(ticker: str, interval: str = "1m", period: str | None = "7d",
     df.columns = [c.lower().replace(" ", "_") for c in df.columns]
     idx = pd.DatetimeIndex(df.index)
     df.index = (idx.tz_localize(ET) if idx.tz is None else idx).tz_convert("UTC")
-    df.index.name = "timestamp"
+    if interval[-1] in "mh":  # intraday bars are stamped at OPEN, re-stamp at CLOSE
+        df.index = df.index + pd.Timedelta(interval.replace("m", "min"))
+    df.index.name = "timestamp_close" if interval[-1] in "mh" else "date"
     df.to_csv(path)
     return df
 
