@@ -1,0 +1,10 @@
+pandas>=2.1
+numpy
+matplotlib
+yfinance>=0.2.40
+ccxt>=4.0
+statsmodels
+openpyxl
+jupyter
+nbformat
+pytest
